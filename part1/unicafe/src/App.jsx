@@ -8,7 +8,10 @@ const Button = ({handleClick, text}) => {
 
 const StatInfo = ({text, textValue}) => {
   return (
-    <div>{text} {textValue}</div>
+    <>
+    <td>{text}</td>
+    <td>{textValue}</td>
+    </>
   )
 }
 
@@ -19,7 +22,7 @@ const Statistics = ({good, neutral, bad}) => {
   const positiveRate = good/numReviews * 100;
 
   if(good == 0 && neutral == 0 && bad == 0) {
-    return(
+    return (
       <>
         <h1>statistics</h1>
         <h4>No feedback given</h4>
@@ -30,12 +33,28 @@ const Statistics = ({good, neutral, bad}) => {
   return (
     <>
       <h1>statistics</h1>
-      <StatInfo text="good" textValue={good} />
-      <StatInfo text="neutral" textValue={neutral} />
-      <StatInfo text="bad" textValue={bad} />
-      <StatInfo text="all" textValue={numReviews} />
-      <StatInfo text="average" textValue={average} />
-      <StatInfo text="positive" textValue={positiveRate + '%'} />
+      <table>
+        <tbody>
+        <tr>
+        <StatInfo text="good" textValue={good} />
+        </tr>
+        <tr>
+        <StatInfo text="neutral" textValue={neutral} />
+        </tr>
+        <tr>
+        <StatInfo text="bad" textValue={bad} />
+        </tr>
+        <tr>
+        <StatInfo text="all" textValue={numReviews} />
+        </tr>
+        <tr>
+        <StatInfo text="average" textValue={average} />
+        </tr>
+        <tr>
+        <StatInfo text="positive" textValue={positiveRate + '%'} />
+        </tr>
+        </tbody>       
+      </table>
     </>
   )
 }
