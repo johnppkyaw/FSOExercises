@@ -9,12 +9,25 @@ const NextAnecdote = ({changeAnecdote, addVote}) => {
     
   )
 }
+const findMaxIndex = (arr) => {
+  let max = 0;
+  let maxIndex = 0;
+  arr.forEach((num, index) => {
+    if(num > max) {
+      max = num;
+      maxIndex = index;
+    }
+  });
+  return maxIndex;
+}
 
-const MostVotes = ({scores}) => {
+const MostVotes = ({scores, anecdotes}) => {
+  const maxIndex = findMaxIndex(scores);
   return (
     <>
     <h1>Anecdote with most votes</h1>
-    
+    {anecdotes[maxIndex]}
+    <div>has {scores[maxIndex]} votes</div>  
     </>
   )
 }
@@ -53,7 +66,7 @@ const App = () => {
       {anecdotes[selected]}
       <div>has {scores[selected]} votes</div>
       <NextAnecdote changeAnecdote={changeAnecdote} addVote={addVote}/>
-      <MostVotes scores={scores}/>
+      <MostVotes scores={scores} anecdotes={anecdotes}/>
     </div>
   )
 }
