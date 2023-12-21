@@ -18,6 +18,15 @@ const Statistics = ({good, neutral, bad}) => {
   const average = totalScore/numReviews;
   const positiveRate = good/numReviews * 100;
 
+  if(good == 0 && neutral == 0 && bad == 0) {
+    return(
+      <>
+        <h1>statistics</h1>
+        <h4>No feedback given</h4>
+      </>
+    )
+  }
+
   return (
     <>
       <h1>statistics</h1>
