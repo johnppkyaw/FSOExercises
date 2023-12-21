@@ -1,11 +1,21 @@
 import { useState } from 'react'
 
-const NextAnecdote = ({changeAnecdote}) => {
+const NextAnecdote = ({changeAnecdote, addVote}) => {
   return (
     <div>
+      <button onClick={addVote}>Vote</button>
       <button onClick={changeAnecdote}>Next anecdote</button>
     </div>
     
+  )
+}
+
+const MostVotes = ({scores}) => {
+  return (
+    <>
+    <h1>Anecdote with most votes</h1>
+    
+    </>
   )
 }
 
@@ -20,18 +30,30 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  const numAnecdotes = anecdotes.length;
    
-  const [selected, setSelected] = useState(0)
-  const randomNumber = () => {
-    const number = Math.floor(Math.random() * (anecdotes.length));
-    console.log(number);
-    return number;
+  const [selected, setSelected] = useState(0);
+  const [scores, setScores] = useState(Array(numAnecdotes).fill(0));
+
+  const changeAnecdote = () => {
+    setSelected(Math.floor(Math.random() * (anecdotes.length)));
+  }
+
+  const addVote = () => {
+    setScores(prev => {
+      const newScores = [...prev];
+      newScores[selected] += 1;
+      return newScores;
+    });
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
-      <NextAnecdote changeAnecdote={() => setSelected(prev => randomNumber())} />
+      <div>has {scores[selected]} votes</div>
+      <NextAnecdote changeAnecdote={changeAnecdote} addVote={addVote}/>
+      <MostVotes scores={scores}/>
     </div>
   )
 }
