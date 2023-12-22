@@ -1,6 +1,6 @@
-const Number = ({name}) => {
+const Number = ({name, number}) => {
   return (
-    <div>{name}</div>
+    <div>{name} {number}</div>
   )
 }
 
