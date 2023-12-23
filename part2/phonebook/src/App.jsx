@@ -58,6 +58,18 @@ const App = () => {
     setFilteredList(filtered);
   }
 
+  const deleteContact = (e) => {
+    e.preventDefault();
+    const targetContact = persons.find(person => person.name == e.target.value);
+    if(window.confirm(`Delete ${targetContact.name}?`)) {
+      phonebookService
+        .remove(targetContact.id)
+        .then(() => {
+          setPersons(persons.filter(person => person.name != e.target.value));
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -76,7 +88,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons filteredList={filteredList} persons={persons}/>
+      <Persons filteredList={filteredList} persons={persons} deleteContact={deleteContact}/>
 
     </div>
   )

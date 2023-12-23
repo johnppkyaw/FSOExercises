@@ -1,6 +1,6 @@
-const Number = ({name, number}) => {
+const Number = ({name, number, deleteContact}) => {
   return (
-    <div>{name} {number}</div>
+    <div>{name} {number} <button onClick={deleteContact} value={name}>delete</button></div>
   )
 }
 
