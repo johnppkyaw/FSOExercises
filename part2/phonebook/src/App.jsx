@@ -34,13 +34,22 @@ const App = () => {
   const addNameNumber = (e) => {
     e.preventDefault();
     const targetPerson = persons.find(person => person.name == newName);
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    };
     if(targetPerson) {
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const id = targetPerson.id;
+      phonebookService
+        .update(id, newPerson)
+        .then(updatedInfo => {
+          setPersons(persons.map(person => person.id != id ? person : updatedInfo))
+          setNewName('');
+          setNewNumber('');
+        })
+      }
     } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber
-      };
       phonebookService
         .create(newPerson)
         .then(returnedInfo => {
