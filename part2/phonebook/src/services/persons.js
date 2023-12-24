@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+  //load db.json on terminal:
+    //npx json-server --port 3001 --watch db.json
+
 const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {

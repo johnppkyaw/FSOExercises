@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import phonebookService from './services/persons'
+import Notification from './components/Notification'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -14,6 +15,11 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [filteredList, setFilteredList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  //load db.json on terminal:
+    //npx json-server --port 3001 --watch db.json
 
   useEffect(() => {
     phonebookService
@@ -48,15 +54,27 @@ const App = () => {
           setNewName('');
           setNewNumber('');
         })
+        .catch(error => {
+          setErrorMessage(`${newName} was already removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(person => person.id != id))
+        })
       }
     } else {
       phonebookService
         .create(newPerson)
         .then(returnedInfo => {
+          setSuccessMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
           setPersons(persons.concat(returnedInfo));
           setNewName('');
           setNewNumber('');
         })
+
     }
   }
 
@@ -79,9 +97,13 @@ const App = () => {
     }
   }
 
+
+
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification errorMessage={errorMessage} successMessage={successMessage} />
 
       <Filter value={newFilter} onChange={filterList}/>
 
