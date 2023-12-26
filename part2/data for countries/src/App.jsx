@@ -1,15 +1,28 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
+import Country from "./components/Country"
 
 const App = ({countriesData}) => {
 
-  console.log(countriesData);
+  const [filteredCountries, setFilteredCountries] = useState([]);
+  const [inputName, setInputName] = useState("");
+
+
+  const setFilter = (e) => {
+    const filter = e.target.value.toLowerCase();
+    setInputName(filter)
+    const filtered = countriesData.filter(country => country.name.common.toLowerCase().includes(filter));
+    setFilteredCountries(filtered);
+    console.log(filteredCountries);
+
+  }
+
 
 
   return (
     <div>
-      <p>Hello world</p>
-      <p>{countriesData.map(country => country.name.common)}</p>
+      <div>find countries <input value={inputName} onChange={setFilter}/></div>
+      <Country filteredCountries={filteredCountries}/>
     </div>
   )
 }
