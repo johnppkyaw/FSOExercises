@@ -7,7 +7,6 @@ const App = ({countriesData}) => {
   const [filteredCountries, setFilteredCountries] = useState([]);
   const [inputName, setInputName] = useState("");
 
-
   const setFilter = (e) => {
     const filter = e.target.value.toLowerCase();
     setInputName(filter)
@@ -21,8 +20,6 @@ const App = ({countriesData}) => {
     setFilteredCountries(filtered);
     // console.log(filteredCountries);
   }
-
-
 
   return (
     <div>

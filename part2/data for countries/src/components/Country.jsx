@@ -1,15 +1,39 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 const Country = ({filteredCountries}) => {
 
     const [countryMatchCount, setCountryMatchCount] = useState(0);
     const [targetCountry, setTargetCountry] = useState(null);
+    const [weatherInfo, setWeatherInfo] = useState(null);
+
+    const api_key = import.meta.env.VITE_SOME_KEY;
 
     useEffect(() => {
         setCountryMatchCount(filteredCountries.length);
-        setTargetCountry(filteredCountries[0]);
+
+        if(filteredCountries.length === 1) {
+            setTargetCountry(filteredCountries[0]);
+        }
     },[filteredCountries])
+
+    useEffect(() => {
+        if (targetCountry) {
+          const lat = targetCountry.latlng[0];
+          const long = targetCountry.latlng[1];
+
+          axios
+            .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${api_key}`)
+            .then((response) => {
+              const weatherData = response.data;
+              setWeatherInfo(weatherData);
+            })
+            .catch((error) => {
+              console.error('Error fetching weather data:', error);
+            });
+        }
+      }, [targetCountry]);
 
     const showCountry = (country) => {
         setCountryMatchCount(1);
@@ -41,6 +65,14 @@ const Country = ({filteredCountries}) => {
                 ))}
             </ul>
             <img src={targetCountry.flags.png} width="150" alt="the picture of the country flag"></img>
+            {weatherInfo && (
+                <>
+                <h2>Weather in {targetCountry.capital[0]}</h2>
+                <p>temperature {weatherInfo.main.temp} Celcius</p>
+                <img src={`https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png`} alt="picture-of-weather-condition"></img>
+                <p>wind {weatherInfo.wind.speed} m/s</p>
+                </>
+                )}
             </>
         )
     }
