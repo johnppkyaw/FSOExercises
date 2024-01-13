@@ -11,7 +11,13 @@ const App = ({countriesData}) => {
   const setFilter = (e) => {
     const filter = e.target.value.toLowerCase();
     setInputName(filter)
-    const filtered = countriesData.filter(country => country.name.common.toLowerCase().includes(filter));
+    const filtered = countriesData.filter(country => {
+      console.log(country.name.common.length);
+      console.log(filter.length);
+      if(country.name.common.toLowerCase().includes(filter)) {
+        return country.name.common.length == filter.length || country.name.common.toLowerCase().includes(filter)
+      }
+    });
     setFilteredCountries(filtered);
     console.log(filteredCountries);
 
